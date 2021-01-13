@@ -1,0 +1,39 @@
+---
+title: "Lab1"
+author: "Kelsie Fronheiser"
+date: "1/12/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(here)
+library(sf)
+library(tmap)
+```
+
+
+#### Read in SF trees data
+```{r}
+sf_trees <- read_csv(here("data", "sf_trees", "sf_trees.csv"))
+```
+
+#### Basic wrangling reminders
+
+Find top five highest observations of trees by legal status & do some wrangling and make a graph
+```{r}
+top_5_status <- sf_trees %>% 
+  count(legal_status) %>% 
+  #group by, summarize, and n in one function
+  drop_na(legal_status) %>% 
+  rename(tree_count = n) %>% 
+  #new name = orignal name
+  relocate(tree_count) %>% 
+#move location of column, this moved it to the front
+  slice_max(tree_count, n = 5)
+# picked out top 5 highest values of tree_count
+
+```
+tree_count
